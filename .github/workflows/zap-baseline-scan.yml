@@ -1,16 +1,32 @@
 name: OWASP ZAP Baseline Scan
 
-on: [push, pull_request]
+on: 
+  push:
+    branches: 
+      - owasp-zap-integration  # Run on pushes to the integration branch
+  pull_request:
+    branches: 
+      - main                  # Run on PRs to the main branch
 
 jobs:
   zap_scan:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest    # Use the latest Ubuntu runner
+
     steps:
-    - name: Checkout repo
+    - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: ZAP Scan
-      uses: zaproxy/action-baseline@v0.2.0
+    - name: Run ZAP Baseline Scan
+      uses: zaproxy/action-baseline@v0.4.0  # Use the specific version of ZAP action
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        target: 'https://juice-shop.herokuapp.com/#'
+        target: 'https://juice-shop.herokuapp.com/#'  # Target URL for scanning
+
+    - name: Upload ZAP Scan Report
+      if: failure()  # Upload report if the scan fails
+      uses: actions/upload-artifact@v2
+      with:
+        name: zap-scan-report
+        path: |
+          zap.out
+          zap.log
