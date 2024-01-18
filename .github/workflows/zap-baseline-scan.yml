@@ -4,14 +4,14 @@ name: OWASP ZAP Baseline Scan
 on:
   push:
     branches:
-      - '**'
+      - '**'  # Trigger for pushes to all branches
   pull_request:
     branches:
-      - main
+      - main  # Trigger for pull requests to main
 
 jobs:
   zap_scan:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
 
     steps:
     - name: Checkout Repository
@@ -21,4 +21,7 @@ jobs:
       uses: zaproxy/action-baseline@v0.4.0
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        target: 'https://juice-shop.herokuapp.com/#'
+        docker_name: 'owasp/zap2docker-stable'  # Use the stable docker image
+        target: 'https://juice-shop.herokuapp.com/#'  # The target URL for the scan
+        rules_file_name: '.zap/rules.tsv'  # Path to a file containing the desired rules configuration (optional)
+        cmd_options: '-a'  # Additional command line options for the ZAP baseline scan (optional)
