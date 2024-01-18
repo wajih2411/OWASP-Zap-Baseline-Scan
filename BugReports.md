@@ -1,5 +1,7 @@
 # Bug Reports
 
+## Link to Github: https://github.com/wajih2411/OWASP-Zap-Baseline-Scan
+
 ## 1. Cross-Domain JavaScript Source File Inclusion
 
 ### Description
