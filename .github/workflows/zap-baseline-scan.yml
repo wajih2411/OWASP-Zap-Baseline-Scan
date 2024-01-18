@@ -1,0 +1,16 @@
+name: OWASP ZAP Baseline Scan
+
+on: [push, pull_request]
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
+
+    - name: ZAP Scan
+      uses: zaproxy/action-baseline@v0.2.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        target: 'https://juice-shop.herokuapp.com/#'
